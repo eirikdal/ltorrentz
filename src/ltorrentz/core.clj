@@ -1,19 +1,30 @@
 (ns ltorrentz.core
-  (:use ring.adapter.jetty)
-  ring.middleware.resource
-  ring.util.response
-  net.cgrand.moustache)
-
-;;; A simple handler
-(defn index
-  [req]
-  (response "Welcome to ltorrentz"))
+  (:use ring.adapter.jetty
+        ltorrentz.models
+        ltorrentz.controller
+        [ring.middleware file file-info stacktrace reload]
+        [ring.util.response :exclude [not-found]]
+        net.cgrand.moustache
+        net.cgrand.enlive-html))
 
 ; Routes definition
 (def routes
   (app
-   [""] index))
+   [""] (delegate index)
+   [id] (delegate post id)
+   )
+)
+
+(defn myapp
+  []
+  (-> routes
+      (wrap-file "resources/public")
+      (wrap-reload '(ltorrentz.core ltorrentz.templates ltorrentz.models ltorrentz.controller))))
 
 ;;; start function for starting jetty
 (defn start [&amp port]
-             (run-jetty #'routes {:port (or port 8080) :join? false}))
+             (run-jetty (myapp) {:port (or port 8080) :join? false}))
+
+(defn restart [srv port]
+  (.stop srv)
+  (start false port))
