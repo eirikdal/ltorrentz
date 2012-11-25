@@ -2,7 +2,7 @@
   (:use ring.adapter.jetty
         ltorrentz.models
         ltorrentz.controller
-        [ring.middleware file file-info stacktrace reload]
+        [ring.middleware resource params file file-info stacktrace reload]
         [ring.util.response :exclude [not-found]]
         net.cgrand.moustache
         net.cgrand.enlive-html))
@@ -10,6 +10,7 @@
 ; Routes definition
 (def routes
   (app
+   ["login"] (delegate login)
    [""] (delegate index)
    [id] (delegate post id)
    )
