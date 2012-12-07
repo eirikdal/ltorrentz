@@ -26,3 +26,21 @@
                         (timestamp :published )
                         (integer :author [:refer :authors :id] :not-null))))
   (down [] (drop (table :posts))))
+
+(defmigration add-ingredients-table
+  (up [] (create clogdb
+                 (table :ingredients (integer :id :primary-key )
+                        (varchar :name 250))))
+  (down [] (drop (table :ingredients))))
+
+(defmigration add-recipes-table
+  (up [] (create clogdb
+                 (table :recipes (integer :id :primary-key )
+                        (varchar :title 250))))
+  (down [] (drop (table :recipes))))
+
+(defmigration add-subrecipe-table
+  (up [] (create clogdb
+                 (table :subrecipe (integer :id :primary-key )
+                        (varchar :title 250))))
+  (down [] (drop (table :subrecipe))))

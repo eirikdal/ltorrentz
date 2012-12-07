@@ -5,6 +5,7 @@
                  [ring "1.1.6"
                   :exclusions [org.clojure/clojure
                                clj-stacktrace]]
+                 [noir "1.3.0-beta1"]
                  [lobos "1.0.0-SNAPSHOT"]
                  [postgresql "9.1-901.jdbc4"]
                  [korma "0.3.0-beta9"]
